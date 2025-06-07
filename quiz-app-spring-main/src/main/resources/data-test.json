@@ -1,0 +1,82 @@
+[
+  {
+    "questionTitle": "What is the primary color of the sun in children’s drawings?",
+    "option1": "Red",
+    "option2": "Blue",
+    "option3": "Yellow",
+    "option4": "Green",
+    "rightAnswer": "Yellow",
+    "difficultylevel": "Easy",
+    "category": "Baby"
+  },
+  {
+    "questionTitle": "Which animal says 'moo'?",
+    "option1": "Dog",
+    "option2": "Cow",
+    "option3": "Cat",
+    "option4": "Sheep",
+    "rightAnswer": "Cow",
+    "difficultylevel": "Easy",
+    "category": "Baby"
+  },
+  {
+    "questionTitle": "What color is the sky on a clear day?",
+    "option1": "Blue",
+    "option2": "Purple",
+    "option3": "Orange",
+    "option4": "Green",
+    "rightAnswer": "Blue",
+    "difficultylevel": "Easy",
+    "category": "Toddler"
+  },
+  {
+    "questionTitle": "What do babies typically drink?",
+    "option1": "Milk",
+    "option2": "Juice",
+    "option3": "Soda",
+    "option4": "Tea",
+    "rightAnswer": "Milk",
+    "difficultylevel": "Easy",
+    "category": "Baby"
+  },
+  {
+    "questionTitle": "Which of these is not a body part?",
+    "option1": "Arm",
+    "option2": "Leg",
+    "option3": "Toy",
+    "option4": "Head",
+    "rightAnswer": "Toy",
+    "difficultylevel": "Medium",
+    "category": "Preschool"
+  },
+  {
+    "questionTitle": "What comes after the number 3?",
+    "option1": "2",
+    "option2": "4",
+    "option3": "5",
+    "option4": "6",
+    "rightAnswer": "4",
+    "difficultylevel": "Easy",
+    "category": "Preschool"
+  },
+  {
+    "questionTitle": "What is used to write on a blackboard?",
+    "option1": "Crayon",
+    "option2": "Pen",
+    "option3": "Chalk",
+    "option4": "Marker",
+    "rightAnswer": "Chalk",
+    "difficultylevel": "Easy",
+    "category": "Education"
+  },
+  {
+    "questionTitle": "Which one is a fruit?",
+    "option1": "Carrot",
+    "option2": "Apple",
+    "option3": "Lettuce",
+    "option4": "Potato",
+    "rightAnswer": "Apple",
+    "difficultylevel": "Easy",
+    "category": "Food"
+  }
+]
