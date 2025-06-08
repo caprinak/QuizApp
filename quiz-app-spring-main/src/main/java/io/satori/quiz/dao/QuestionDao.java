@@ -1,5 +1,6 @@
 package io.satori.quiz.dao;
 
+
 import io.satori.quiz.model.Question;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,6 +15,8 @@ public interface QuestionDao extends JpaRepository<Question, Integer> {
 
     @Query(value = "SELECT * FROM question q Where q.category=:category ORDER BY RANDOM() LIMIT :numQ", nativeQuery = true)
     List<Question> findRandomQuestionsByCategory(String category, int numQ);
+
+    boolean existsByQuestionTitle(String questionTitle); // New method
 
 
     //void saveAll(List<Question> entities);

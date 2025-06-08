@@ -1,55 +1,65 @@
 package io.satori.quiz.service;
 
-import io.satori.quiz.model.Question;
 import io.satori.quiz.dao.QuestionDao;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import io.satori.quiz.dto.QuestionCreationRequestDto;
+import io.satori.quiz.dto.QuestionDto;
+import io.satori.quiz.exception.QuestionAlreadyExistsException;
+import io.satori.quiz.exception.ResourceNotFoundException;
+import io.satori.quiz.mapper.QuestionMapper;
+import io.satori.quiz.model.Question;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class QuestionService {
-    QuestionDao questionDao;
-    List<Question> allQuestions;
-    public QuestionService(QuestionDao questionDao) {
+    private final QuestionDao questionDao;
+    private final QuestionMapper questionMapper;
+
+    // Constructor injection is preferred
+    public QuestionService(QuestionDao questionDao, QuestionMapper questionMapper) {
         this.questionDao = questionDao;
-        allQuestions = questionDao.findAll();
+        this.questionMapper = questionMapper;
     }
 
+    public List<QuestionDto> getAllQuestions() {
+        // For getAllQuestions, you might want a DTO that includes the right answer
+        // if this is for an admin view. For now, using QuestionDto.
+        // If QuestionDto should not have rightAnswer, create a different DTO for this.
+        // For simplicity, let's assume QuestionDto is fine for now, or create AdminQuestionDto.
+        // Let's map to QuestionDto which hides the right answer by default.
+        // If you need all details including right answer, create a specific DTO for that.
+        List<Question> questions = questionDao.findAll();
+        return questionMapper.questionsToQuestionDtos(questions); // This will use the mapping that omits rightAnswer
+    }
 
-    public ResponseEntity<List<Question>> getAllQuestions() {
-        try {
-            return new ResponseEntity<>(allQuestions, HttpStatus.OK);
-        }catch (Exception e){
-            e.printStackTrace();
+    public List<QuestionDto> getQuestionsByCategory(String category) {
+        List<Question> questions = questionDao.findByCategory(category);
+        if (questions.isEmpty()) {
+            // Optionally throw ResourceNotFoundException if category is valid but has no questions
+            // or return an empty list as is.
         }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
+        return questionMapper.questionsToQuestionDtos(questions);
     }
 
-    public ResponseEntity<List<Question>> getQuestionsByCategory(String category) {
-        try {
-            return new ResponseEntity<>(questionDao.findByCategory(category),HttpStatus.OK);
-        }catch (Exception e){
-            e.printStackTrace();
+    @Transactional
+    public QuestionDto addQuestion(QuestionCreationRequestDto questionRequestDto) {
+        if (questionDao.existsByQuestionTitle(questionRequestDto.getQuestionTitle())) {
+            throw new QuestionAlreadyExistsException("Question with title '" + questionRequestDto.getQuestionTitle() + "' already exists.");
         }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
-
+        Question question = questionMapper.questionCreationRequestDtoToQuestion(questionRequestDto);
+        Question savedQuestion = questionDao.save(question);
+        // Return a DTO that represents the created question, potentially without the right answer
+        // if QuestionDto is designed that way, or a more complete DTO if needed.
+        return questionMapper.questionToQuestionDto(savedQuestion);
     }
 
-    public ResponseEntity<String> addQuestion(Question question) {
-       boolean exists = allQuestions.stream().anyMatch(q -> q.getQuestionTitle().equals(question.getQuestionTitle()));
-       if(exists){
-         return new ResponseEntity<>("questions already exist",HttpStatus.CONFLICT)  ;
-       }
-        questionDao.save(question);
-        return new ResponseEntity<>("success",HttpStatus.CREATED);
-    }
-
-    public ResponseEntity<String> deleteQuestion(Integer id) {
+    @Transactional
+    public void deleteQuestion(Integer id) {
+        if (!questionDao.existsById(id)) {
+            throw new ResourceNotFoundException("Question not found with id: " + id + " for deletion.");
+        }
         questionDao.deleteById(id);
-        return new ResponseEntity<>("deleted",HttpStatus.NO_CONTENT);
     }
 }

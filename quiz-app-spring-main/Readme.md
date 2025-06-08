@@ -17,6 +17,8 @@ This is a backend application for a quiz platform, built using Spring Boot. It a
 *   **Quiz Gameplay:**
     *   Retrieve a quiz by its ID to display questions to the user.
     *   Submit answers for a quiz and receive a calculated score.
+*   **DTO Pattern:** Uses Data Transfer Objects (DTOs) for API request/response, mapped using MapStruct.
+*   **Global Exception Handling:** Centralized error handling for custom exceptions like `ResourceNotFoundException` and `QuestionAlreadyExistsException`.
 
 ## Technologies Used
 
@@ -29,7 +31,7 @@ This is a backend application for a quiz platform, built using Spring Boot. It a
 *   **PostgreSQL:** As the relational database.
 *   **Maven:** As the build and dependency management tool.
 *   **Lombok:** To reduce boilerplate code (getters, setters, constructors, etc.).
-
+*   **MapStruct:** For mapping between DTOs and entity objects.
 ## API Endpoints
 
 ### Question Endpoints (`/questions`)
